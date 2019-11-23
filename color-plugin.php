@@ -29,20 +29,16 @@ add_option('bgcolor_color', '#FFFFFF', '', 'yes');
 /** Add Admin Menu */
 add_action( 'admin_menu', 'bgcolor_menu' );
 
-
 /** Add Menu Options */
 function bgcolor_menu() {
   add_menu_page( 'BG Color Options', 'BG Color', 'administrator', __FILE__, 'bgcolor_settings_page' );
   add_action( 'admin_init', 'bgcolor_register_mysettings' );
 }
 
-
 /** Register Color Option */
-
 function bgcolor_register_mysettings() { 
   register_setting( 'bgcolor_settings', 'bgcolor_color' );
 }
-
   
 /** BGColor Form */
 function bgcolor_settings_page() {
