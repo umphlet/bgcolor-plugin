@@ -78,5 +78,4 @@ function bgcolor_styles_method() {
   }
   
 add_action( 'wp_enqueue_scripts', 'bgcolor_styles_method' );
-
 ?>
