@@ -24,7 +24,8 @@ You should have received a copy of the GNU General Public License
 along with BG Color Plugin . If not, see https://www.gnu.org/licenses/old-licenses/gpl-2.0.html.
 */
 
-add_option('bgcolor_color', '#FFFFFF', '', 'yes');
+/** Initialiuze bgcolor option */
+add_option( 'bgcolor_color', '#FFFFFF', '', 'yes' );
 
 /** Add Admin Menu */
 add_action( 'admin_menu', 'bgcolor_menu' );
@@ -54,13 +55,22 @@ function bgcolor_settings_page() {
     <table class="form-table">
         <tr valign="top">
         <th scope="row">BG Color</th>
-        <td><input type="color" name="bgcolor_color" value="<?php echo esc_attr( get_option('bgcolor_color') ); ?>" /></td>
+        <td><input type="text" id="picker" name="bgcolor_color" value="<?php echo esc_attr( get_option('bgcolor_color') ); ?>" /></td>
         </tr>
     </table>
+    <!-- Semicolon needed to be able to execute custom jQuery code for color picker -->
+    <script>
+    ;(function($){
+      $("#picker").spectrum({
+      showInput: true,
+      showInitial: true,
+      preferredFormat: "hex"
+    });
+    })(jQuery);
+    </script>
 <?php submit_button(); ?>
 </form>
 </div>
-
 <?php } 
 
 /** Place inline styles on site */
@@ -69,13 +79,27 @@ function bgcolor_styles_method() {
 		'custom-style',
 		get_template_directory_uri() . '/css/custom_script.css'
 	);
-  $color = get_option('bgcolor_color');
+  $color = get_option( 'bgcolor_color' );
   $custom_css = "
     body {
-      background: {$color} !important;
+      background-color: {$color} !important;
     }";
   wp_add_inline_style( 'custom-style', $custom_css );
   }
   
 add_action( 'wp_enqueue_scripts', 'bgcolor_styles_method' );
+
+/** Styles/js for color picker for Spectrum jS color picker https://bgrins.github.io/spectrum/ */
+function bgcolor_admin_scripts( $hook ) {
+  if ( $hook == 'toplevel_page_bgcolor-plugin/bgcolor-plugin') {
+  wp_register_script( 'spectrum-js', plugins_url() . '/bgcolor-plugin/spectrum/spectrum.js', array('jquery') );
+  wp_register_style( 'spectrum-css', plugins_url() . '/bgcolor-plugin/spectrum/spectrum.css' );
+  wp_enqueue_style( 'spectrum-css' );
+  wp_enqueue_script( 'spectrum-js' );
+  }
+  
+}
+
+add_action( 'admin_enqueue_scripts', 'bgcolor_admin_scripts' );
+
 ?>
