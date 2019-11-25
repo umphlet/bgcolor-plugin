@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: BG Color Plugin
-Plugin URI:  http://umphlet.github.io
+Plugin URI:  https://github.com/umphlet/bgcolor-plugin
 Description: A simple plugin to change the background color of the site.
 Version:     1.0
 Author:      Sean Umphlet
